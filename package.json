@@ -1,0 +1,19 @@
+{
+  "name": "location-server",
+  "version": "1.0.0",
+  "description": "A basic web server that gets client location and Ip address",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "HTE",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "express": "^4.19.2",
+    "geoip-lite": "^1.4.10",
+    "geoip2-api": "^1.0.4",
+    "node-iplocate": "^1.0.3",
+    "request-ip": "^3.3.0"
+  }
+}
