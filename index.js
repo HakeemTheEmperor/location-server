@@ -48,11 +48,11 @@ app.get("/", (req, res) => {
 
 // Router to handle the POST request
 app.post("/user", async (req, res) => {
-  let { username } = req.query;
+  let { visitor_name } = req.query;
 
-  username = username.replace(/[' "]/g, "");
+  visitor_name = visitor_name.replace(/[' "]/g, "");
 
-  if (!username) {
+  if (!visitor_name) {
     return res.status(400).send({ error: "Username is required" });
   }
 
@@ -73,10 +73,9 @@ app.post("/user", async (req, res) => {
 
   let temperature = weatherInfo.main.temp;
   res.send({
-    greeting: `Hello ${username}!, the temperature is 11 degrees celcius in ${location.city}`,
     client_ip: ip,
     location: location ? location.city : null,
-    data: temperature,
+    greeting: `Hello ${visitor_name}!, the temperature is ${temperature} degrees celcius in ${location.city}`,
   });
 });
 
