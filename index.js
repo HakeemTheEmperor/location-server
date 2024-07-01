@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
 });
 
 // Router to handle the POST request
-app.get("/user", async (req, res) => {
+app.get("/api/hello", async (req, res) => {
   let { visitor_name } = req.query;
 
   visitor_name = visitor_name.replace(/[' "]/g, "");
