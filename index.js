@@ -29,17 +29,18 @@ async function getLocationFromIP() {
   }
 }
 
-const getWeather = async (lat, lon) => {
-  const apiKey = "d0bb2381513b7c00e0e3785da082273d";
+async function fetchWeatherData(lat, lon) {
+  const apiKey = "your_api_key"; // Replace with your OpenWeatherMap API key
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
   try {
     const response = await axios.get(url);
-    console.log(response.data);
+    return response.data;
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching weather data:", error);
+    throw error; // Rethrow the error after logging it
   }
-};
+}
 
 app.get("/", (req, res) => {
   res.send("Server running successfully");
@@ -60,13 +61,21 @@ app.post("/user", async (req, res) => {
 
   const location = await getLocationFromIP();
   const latitude = Number(location.latitude);
-  const longitude = location.longitude;
+  const longitude = Number(location.longitude);
+
+  let weatherInfo;
+
+  try {
+    weatherInfo = await fetchWeatherData(latitude, longitude);
+  } catch (error) {
+    console.log(error);
+  }
 
   res.send({
     greeting: `Hello ${username}!, the temperature is 11 degrees celcius in ${location.city}`,
     client_ip: ip,
     location: location ? location.city : null,
-    data: typeof latitude,
+    data: weatherInfo ? weatherInfo : null,
   });
 });
 
