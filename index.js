@@ -59,14 +59,14 @@ app.post("/user", async (req, res) => {
   ip = getIPv4(ip);
 
   const location = await getLocationFromIP();
-  const latitude = location.latitude;
+  const latitude = Number(location.latitude);
   const longitude = location.longitude;
 
   res.send({
     greeting: `Hello ${username}!, the temperature is 11 degrees celcius in ${location.city}`,
     client_ip: ip,
     location: location ? location.city : null,
-    data: typeof location.latitude,
+    data: typeof latitude,
   });
 });
 
