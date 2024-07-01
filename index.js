@@ -17,7 +17,7 @@ const getIPv4 = (ip) => {
   return ip;
 };
 
-async function getLocationFromIP(ip) {
+async function getLocationFromIP() {
   const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${API_KEY}`;
 
   try {
@@ -28,6 +28,18 @@ async function getLocationFromIP(ip) {
     return null;
   }
 }
+
+const getWeather = async (lat, lon) => {
+  const apiKey = "d0bb2381513b7c00e0e3785da082273d";
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+
+  try {
+    const response = await axios.get(url);
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 app.get("/", (req, res) => {
   res.send("Server running successfully");
@@ -46,7 +58,7 @@ app.post("/user", async (req, res) => {
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || null;
   ip = getIPv4(ip);
 
-  const location = await getLocationFromIP(ip);
+  const location = await getLocationFromIP();
   const latitude = location.latitude;
   const longitude = location.longitude;
 
@@ -54,7 +66,7 @@ app.post("/user", async (req, res) => {
     greeting: `Hello ${username}!, the temperature is 11 degrees celcius in ${location.city}`,
     client_ip: ip,
     location: location ? location.city : null,
-    data: location.latitude,
+    data: typeof location.latitude,
   });
 });
 
