@@ -29,6 +29,10 @@ async function getLocationFromIP(ip) {
   }
 }
 
+app.get("/", (req, res) => {
+  res.send("Server running successfully");
+});
+
 // Router to handle the POST request
 app.post("/user", async (req, res) => {
   let { username } = req.query;
