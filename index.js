@@ -71,11 +71,12 @@ app.post("/user", async (req, res) => {
     console.log(error);
   }
 
+  let temperature = weatherInfo.main.temp;
   res.send({
     greeting: `Hello ${username}!, the temperature is 11 degrees celcius in ${location.city}`,
     client_ip: ip,
     location: location ? location.city : null,
-    data: weatherInfo ? weatherInfo : null,
+    data: temperature,
   });
 });
 
