@@ -29,16 +29,16 @@ async function getLocationFromIP() {
   }
 }
 
-async function getWeather(lat, lon) {
-  const apiKey = "d0bb2381513b7c00e0e3785da082273d";
+async function fetchWeatherData(lat, lon, apiKey) {
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
   try {
     const response = await axios.get(url);
-    return response;
+    const data = response.data;
+    return data;
   } catch (error) {
-    console.error(error);
-    return null;
+    console.error("Error fetching weather data:", error);
+    throw error; // rethrow the error after logging it
   }
 }
 
