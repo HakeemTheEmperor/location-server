@@ -31,7 +31,7 @@ async function getLocationFromIP() {
 
 async function fetchWeatherData(lat, lon) {
   const apiKey = "d0bb2381513b7c00e0e3785da082273d"; // Replace with your OpenWeatherMap API key
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
 
   try {
     const response = await axios.get(url);
