@@ -22,8 +22,8 @@ async function getLocationFromIP() {
     const response = await axios.get(url);
     return response;
   } catch (error) {
-    console.error("Error fetching location data:", error);
-    return null;
+    console.log("Error fetching location data:", error);
+    return error;
   }
 }
 
@@ -35,7 +35,7 @@ async function fetchWeatherData(lat, lon) {
     const response = await axios.get(url);
     return response.data;
   } catch (error) {
-    console.error("Error fetching weather data:", error);
+    console.log("Error fetching weather data:", error);
     throw error; // Rethrow the error after logging it
   }
 }
@@ -51,13 +51,20 @@ app.get("/api/hello", async (req, res) => {
   visitor_name = visitor_name.replace(/[' "]/g, "");
 
   if (!visitor_name) {
-    return res.status(400).send({ error: "Username is required" });
+    return res.status(400).json({ error: "Username is required" });
   }
 
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || null;
   ip = getIPv4(ip);
 
-  const location = await getLocationFromIP();
+  let location;
+
+  try {
+    location = await getLocationFromIP();
+  } catch {
+    return res.status(500).json({ error: "Failed to fetch location data" });
+  }
+  /*   const location = await getLocationFromIP(); */
   const latitude = Number(location.latitude);
   const longitude = Number(location.longitude);
 
@@ -69,11 +76,11 @@ app.get("/api/hello", async (req, res) => {
     console.log(error);
   }
 
-  let temperature = weatherInfo.main.temp;
-  res.send({
+  let temperature = weatherInfo;
+  res.status(200).json({
     client_ip: ip,
     location: location ? location.city : null,
-    greeting: `Hello ${visitor_name}!, the temperature is ${temperature} degrees celcius in ${location.city}`,
+    greeting: `Hello ${visitor_name}!, the temperature is ${ip} degrees celcius in ${location.city}`,
     location: location,
     ip: typeof ip,
   });
