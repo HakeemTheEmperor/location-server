@@ -15,12 +15,13 @@ const getIPv4 = (ip) => {
   return ip;
 };
 
-async function getLocationFromIP() {
-  const url = `https://api.ipgeolocation.io/ipgeo?apiKey=388779fff2914fcdb636ca55edb43159`;
+async function getLocationFromIP(ip) {
+  const apiKey = "388779fff2914fcdb636ca55edb43159";
+  const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${apiKey}&ip=${ip}`;
 
   try {
     const response = await axios.get(url);
-    return response.data;
+    return response;
   } catch (error) {
     console.error("Error fetching location data:", error);
     return null;
@@ -57,7 +58,7 @@ app.get("/api/hello", async (req, res) => {
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || null;
   ip = getIPv4(ip);
 
-  const location = await getLocationFromIP();
+  const location = await getLocationFromIP(ip);
   const latitude = Number(location.latitude);
   const longitude = Number(location.longitude);
 
@@ -75,6 +76,7 @@ app.get("/api/hello", async (req, res) => {
     location: location ? location.city : null,
     greeting: `Hello ${visitor_name}!, the temperature is ${temperature} degrees celcius in ${location.city}`,
     location: location,
+    ip,
   });
 });
 
