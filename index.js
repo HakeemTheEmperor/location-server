@@ -8,8 +8,6 @@ const port = 3000;
 app.use(express.json());
 app.set("trust proxy", true);
 
-const API_KEY = "388779fff2914fcdb636ca55edb43159";
-
 const getIPv4 = (ip) => {
   if (ip.startsWith("::ffff:")) {
     return ip.split(":").pop();
@@ -18,7 +16,7 @@ const getIPv4 = (ip) => {
 };
 
 async function getLocationFromIP() {
-  const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${API_KEY}`;
+  const url = `https://api.ipgeolocation.io/ipgeo?apiKey=388779fff2914fcdb636ca55edb43159`;
 
   try {
     const response = await axios.get(url);
@@ -31,7 +29,7 @@ async function getLocationFromIP() {
 
 async function fetchWeatherData(lat, lon) {
   const apiKey = "d0bb2381513b7c00e0e3785da082273d"; // Replace with your OpenWeatherMap API key
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
   try {
     const response = await axios.get(url);
@@ -76,6 +74,7 @@ app.get("/api/hello", async (req, res) => {
     client_ip: ip,
     location: location ? location.city : null,
     greeting: `Hello ${visitor_name}!, the temperature is ${temperature} degrees celcius in ${location.city}`,
+    location: location,
   });
 });
 
